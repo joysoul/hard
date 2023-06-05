@@ -51,7 +51,7 @@ app.post("/get", async (c) => {
   let results = await requestTargetUrl(parmobj);
   let e = Date.now();
   console.log("Run Time:" + (e - s));
-  results['time:']=e - s;
+  results['time']=e - s;
   // 打印有效结果和失败的id数组
   //console.log(results);
   //console.log('run Time:' + e-s);
