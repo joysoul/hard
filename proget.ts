@@ -6,7 +6,7 @@ async function requestTargetUrl(parmobj) {
   let {
     each_ip_donum,
     do_span,
-    ip_span，
+    ip_span,
     targurl,
     parm,
     t,
