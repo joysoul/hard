@@ -78,8 +78,9 @@ async function requestTargetUrl(parmobj) {
       //console.log(data);
       // Check if the response data has code 0
       return { uniqueName, data, ip,state };
-    } catch (err) {
-      console.log("is error here````"+uniqueName+'-->'+err.stack);
+    } catch (error) {
+      let err={stack:error.stack,msg:error.massage};
+      console.log("is error here````"+uniqueName+'-->'+ error.massage);
       let data = { err };
       //console.log(data);
       return { uniqueName, data, ip };
