@@ -6,6 +6,7 @@ async function requestTargetUrl(parmobj) {
   let {
     each_ip_donum,
     do_span,
+    ip_span，
     targurl,
     parm,
     t,
@@ -44,7 +45,7 @@ async function requestTargetUrl(parmobj) {
     let query = params.toString();
     // Construct the full url with the query string
     let dourl = `${targurl}?${query}`;
-    console.log(cii + "-->" + new Date().toJSON() + "-->" + ip);
+    //console.log(cii + "-->" + new Date().toJSON() + "-->" + ip);
   
     const client = Deno.createHttpClient({
       proxy: { url: "http://" + ip },
@@ -63,18 +64,20 @@ async function requestTargetUrl(parmobj) {
       let response = await fetch(dourl, init);
       clearTimeout(timeoutId); // 清除超时计时器
       
-      console.log(dourl);
-      console.log("status:" + response.status);
-      
+      //console.log(dourl);
+ 
       if(isNaN(response.status)) {
         throw new Error(`request connection error!`);
       }
-      //200-299 
+      const state=response.status;
+      //coensole.log("status:" + response.status);
+      
+      
       // Await for the response data as json
       let data = await response.json();
       //console.log(data);
       // Check if the response data has code 0
-      return { uniqueName, data, ip };
+      return { uniqueName, data, ip,state };
     } catch (err) {
       console.log("is error here````"+uniqueName+'-->'+err.stack);
       let data = { err };
@@ -129,6 +132,7 @@ async function requestTargetUrl(parmobj) {
          promises.push(makeMultipleRequests(ip, lat_chunks.flat()));
       }
       promises.push(makeMultipleRequests(ip, chunks[i]))
+      await new Promise((resolve) => setTimeout(resolve, ip_span));
     }
     
     // Use Promise.all to wait for all promises to resolve or reject
@@ -166,20 +170,16 @@ async function requestTargetUrl(parmobj) {
   
   let failedName = failed.map((item) =>  item.uniqueName);
   let failed_ips = failed.map((item) =>  item.ip);
-  console.log("failed_ips");
-  console.log(failed_ips);
   let okips = delFailedIp(iparr, failed_ips); // 将 Set 转换回数组
-  console.log("okips");
-  console.log(okips);
 
   let retries = 0;
   
   while (failedName.length > 0) {
-    if (retries >= retrynum) {console.log("is do retry Num:" + retries);break;}
+    if (retries >= retrynum) {console.log("over! is do retry Num:" + retries);break;}
     retries++;
-    console.log("do failed retry:" + retries);
+    console.log("do retry:" + retries);
     if (okips.length === 0) {
-      console.log("all ip failed:" + retries);
+      console.log("all ip failed! retry num:" + retries);
       break;
     }
   

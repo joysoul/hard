@@ -53,8 +53,8 @@ app.post("/get", async (c) => {
   console.log("Run Time:" + (e - s));
   results['time:']=e - s;
   // 打印有效结果和失败的id数组
-  console.log(results);
-
+  //console.log(results);
+  //console.log('run Time:' + e-s);
   return c.json(results);
 });
 
