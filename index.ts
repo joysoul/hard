@@ -43,11 +43,10 @@ app.get("/t/:pip", async (c) => {
 });
 
 app.post("/get", async (c) => {
-  console.log('is here');
   const parmobj = await c.req.json()
 
   let s = Date.now();
-  console.log('start:' + s);
+  console.log('is here start:' + s);
   let results = await requestTargetUrl(parmobj);
   let e = Date.now();
   console.log("Run Time:" + (e - s));
