@@ -1,6 +1,6 @@
 import { Hono } from "https://deno.land/x/hono/mod.ts";
 import { serve } from "https://deno.land/std/http/server.ts";
-import { requestTargetUrl } from "./proget.ts";
+import { requestTargetUrl } from "./prog.ts";
 
 const app = new Hono({ strict: false });
 
@@ -43,7 +43,7 @@ app.get("/t/:pip", async (c) => {
 });
 
 app.post("/get", async (c) => {
-  const parmobj = await c.req.json()
+  let parmobj = await c.req.json()
 
   let s = Date.now();
   console.log('is here start:' + s);
@@ -51,6 +51,7 @@ app.post("/get", async (c) => {
   let e = Date.now();
   console.log("Run Time:" + (e - s));
   results['time']=e - s;
+  parmobj=null;
   // 打印有效结果和失败的id数组
   //console.log(results);
   //console.log('run Time:' + e-s);

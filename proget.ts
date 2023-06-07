@@ -1,6 +1,5 @@
 // This is a possible js code that uses async/await and Promise.all to perform the task
 // It is not tested or guaranteed to work
-// It is based on the information from  and
 async function requestTargetUrl(parmobj) {
   // Destructure the parameters from the object
   let {
@@ -21,11 +20,8 @@ async function requestTargetUrl(parmobj) {
     sucvalue
   } = parmobj;
   let iparr = ips.map((ip) => ip.ip);
- 
 
-  // Define a helper function to make a single request with a given ip and uniqueName
   async function makeRequest(ip, uniqueName, cii,headers) {
-    // Construct the query string with the parameters and values
     const params = new URLSearchParams();
     for (let i = 0; i < parm?.length; i++) {
       let key = parm[i];
@@ -87,7 +83,6 @@ async function requestTargetUrl(parmobj) {
     }
   }
 
-  // Define a helper function to make multiple requests with a given ip and an array of uniqueNames
   async function makeMultipleRequests(ip, uniqueNames) {
     let promises = [];
     for (let i = 0; i < uniqueNames.length; i++) {
@@ -107,7 +102,6 @@ async function requestTargetUrl(parmobj) {
     return await Promise.all(promises);
   }
 
-  // Define a helper function to make concurrent requests with multiple ips and an array of uniqueNames
   async function makeConcurrentRequests(iparr, uniqueNames) {
     let chunks = [];
     let currentChunk = [];
@@ -124,7 +118,6 @@ async function requestTargetUrl(parmobj) {
       }
     }
 
-    // Create an array of promises by mapping each ip and chunk of uniqueNames to multiple requests
     let promises=[];
     for(let i=0;i<chunks.length;i++){
       let ip=iparr[i];
@@ -135,8 +128,6 @@ async function requestTargetUrl(parmobj) {
       promises.push(makeMultipleRequests(ip, chunks[i]))
       await new Promise((resolve) => setTimeout(resolve, ip_span));
     }
-    
-    // Use Promise.all to wait for all promises to resolve or reject
     let results = await Promise.all(promises);
     return results.flat(); // Flatten the array of results
   }
@@ -162,7 +153,6 @@ async function requestTargetUrl(parmobj) {
     }
     return {success,failed}
   }
-  // Start by making concurrent requests with all ips and all uniqueNames
   let results = await makeConcurrentRequests(iparr, uniqueName);
   //let success = results.filter((item) => item?.data[suckey] === sucvalue);
   //let failed = results.filter((item) => item?.data[suckey] !== sucvalue);
@@ -176,7 +166,7 @@ async function requestTargetUrl(parmobj) {
   let retries = 0;
   
   while (failedName.length > 0) {
-    if (retries >= retrynum) {console.log("over! is do retry Num:" + retries);break;}
+    if (retries >= retrynum) {console.log("over! is do retry Num:" + retries+' have failed:' + failedName.length);break;}
     retries++;
     console.log("do retry:" + retries);
     if (okips.length === 0) {
@@ -199,7 +189,6 @@ async function requestTargetUrl(parmobj) {
   }
   const k=new Set(failed_ips);
   const failedips=Array.from(k)
-  // Return an object with success and failed arrays
   return { success, failed, okips, failedips,failedName };
 }
 export { requestTargetUrl };
