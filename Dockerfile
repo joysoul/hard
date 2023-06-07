@@ -24,4 +24,4 @@ WORKDIR /deno-dir
 COPY . .
 
 ENTRYPOINT ["/bin/deno"]
-CMD ["run", "--allow-net", "--allow-env", "--unstable", "index.ts"]
+CMD ["run", "--allow-net", "--allow-env", "--unstable","--v8-flags=--gc-interval=11","index.ts"]

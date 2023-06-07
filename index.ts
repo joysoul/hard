@@ -43,6 +43,8 @@ app.get("/t/:pip", async (c) => {
 });
 
 app.post("/get", async (c) => {
+  const before = Deno.memoryUsage();
+  
   let parmobj = await c.req.json()
 
   let s = Date.now();
@@ -52,9 +54,17 @@ app.post("/get", async (c) => {
   console.log("Run Time:" + (e - s));
   results['time']=e - s;
   parmobj=null;
+  const after = Deno.memoryUsage();
+  //console.log('Memory usage before:', before);
+  //console.log('Memory usage after:', after);
+  
+  const usedHeapSizeDiff = after.heapUsed - before.heapUsed;
+  console.log('Used heap size difference:', usedHeapSizeDiff);
   // 打印有效结果和失败的id数组
   //console.log(results);
   //console.log('run Time:' + e-s);
+  //await Deno.core.opSync("gc");
+  //manualGC();
   return c.json(results);
 });
 

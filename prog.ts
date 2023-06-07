@@ -67,6 +67,7 @@ for (let i = 0; i < parmobj.parm?.length; i++) {
     params.append(key, parmobj[key]);
 }
 let query = params.toString();
+params=null;
 // Construct the full url with the query string
 let dourl = `${parmobj.targurl}?${query}`;
 
@@ -97,17 +98,16 @@ try {
     //console.log(data);
     // Check if the response data has code 0
     response=null;
+    init=null;
     return { uniqueName, data, ip,state };
 } catch (error) {
-    let err={stack:error.stack,msg:error.massage};
     //console.log("is error here````"+uniqueName+'-->'+ error.massage);
-    let data = { err };
+    let data = { err:{stack:error.stack,msg:error.massage} };
     //console.log(data);
     return { uniqueName, data, ip };
 } finally{
     controller.abort(); // 超时后中断请求
     client=null;
-    params=null;
 }
 }
 
@@ -125,13 +125,21 @@ for (let i = 0; i < uniqueNames.length; i++) {
     })
     promises.push(makeRequest(ip, uniqueNames[i], parmobj));
     // Wait for 150ms
-    let timeoutId;
-    await new Promise((resolve) => {timeoutId=setTimeout(resolve, parmobj.do_span)});
-    clearTimeout(timeoutId); // 清除超时计时器
+    //let timeoutId;
+    //await new Promise((resolve) => {timeoutId=setTimeout(resolve, parmobj.do_span)});
+    //clearTimeout(timeoutId); // 清除超时计时器
+    await delay(parmobj.do_span);
 }
     let res=await Promise.all(promises); 
     promises=null;
     return res;
+}
+
+async function delay(ms) {
+    let timeoutId;
+    await new Promise((resolve) => {timeoutId=setTimeout(resolve, ms)});
+    clearTimeout(timeoutId); // 清除超时计时器
+    timeoutId=null;
 }
 
 async function makeConcurrentRequests(iparr, uniqueNames,parmobj) {
@@ -159,9 +167,10 @@ for(let i=0;i<chunks.length;i++){
         break;
     }
     promises.push(makeMultipleRequests(ip, chunks[i],parmobj))
-    let timeoutId;
-    await new Promise((resolve) => {timeoutId=setTimeout(resolve, parmobj.ip_span)});
-    clearTimeout(timeoutId); // 清除超时计时器
+    //let timeoutId;
+    //await new Promise((resolve) => {timeoutId=setTimeout(resolve, parmobj.ip_span)});
+    //clearTimeout(timeoutId); // 清除超时计时器
+    await delay(parmobj.ip_span);
 }
 let results = await Promise.all(promises);
  chunks = null;
