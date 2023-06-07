@@ -64,7 +64,7 @@ app.post("/get", async (c) => {
   //console.log(results);
   //console.log('run Time:' + e-s);
   //await Deno.core.opSync("gc");
-  //manualGC();
+  //manualGC();....
   return c.json(results);
 });
 
