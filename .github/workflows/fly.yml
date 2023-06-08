@@ -1,11 +1,11 @@
-name: Fly Deploy
+name: Fly Deploy us
 on:
   push:
     branches:
-      - draft/deno_prox_get
+      - draft/pro-get-us
 jobs:
   deploy:
-    name: Deploy app
+    name: Deploy app us
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
