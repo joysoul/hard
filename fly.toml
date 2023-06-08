@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for donnuk on 2023-06-08T05:42:21Z
+# fly.toml app configuration file generated for douk on 2023-06-08T05:48:29Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "donnuk"
+app = "douk"
 primary_region = "lhr"
 
 [env]
