@@ -1,11 +1,11 @@
-name: Fly Deploy
+name: Fly Deploy Uk
 on:
   push:
     branches:
-      - draft/pro_get_uk
-jobs:
+      - draft/pro-get-uk
+jobs: 
   deploy:
-    name: Deploy app
+    name: Deploy app Uk
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
