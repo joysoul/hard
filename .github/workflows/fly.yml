@@ -2,7 +2,7 @@ name: Fly Deploy
 on:
   push:
     branches:
-      - draft/deno_prox_get
+      - draft/pro_get_uk
 jobs:
   deploy:
     name: Deploy app
